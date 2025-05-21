@@ -41,7 +41,7 @@ const HistoryItem: React.FC<HistoryItemProps> = ({
           networkDetails,
         });
 
-        const historyItemUiData = mapHistoryItemUi(
+        const historyItemUiData = await mapHistoryItemUi(
           operation,
           publicKey,
           networkDetails,
