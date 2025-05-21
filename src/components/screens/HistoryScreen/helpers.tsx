@@ -29,6 +29,22 @@ export const renderIconComponent = ({
 };
 
 /**
+ * Renders icon component for history items
+ */
+export const renderIconComponentFromString = ({
+  iconString,
+}: {
+  iconString?: string | null;
+}) => {
+  if (iconString) {
+    const IconComponent = Icon[iconString as keyof typeof Icon];
+    return <IconComponent />;
+  }
+
+  return <Icon.User01 circle size={26} />;
+};
+
+/**
  * Renders action icon for history items
  */
 export const renderActionIcon = ({

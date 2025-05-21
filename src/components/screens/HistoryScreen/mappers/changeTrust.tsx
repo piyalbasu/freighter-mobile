@@ -3,40 +3,31 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import BigNumber from "bignumber.js";
 import { AssetIcon } from "components/AssetIcon";
-import {
-  TransactionDetails,
-  TransactionType,
-  TransactionStatus,
-  HistoryItemData,
-} from "components/screens/HistoryScreen/types";
+import { HistoryItemUI } from "components/screens/HistoryScreen/types";
 import Icon from "components/sds/Icon";
 import { ThemeColors } from "hooks/useColors";
-import { t } from "i18next";
 import React from "react";
 
-interface ChangeTrustHistoryItemData {
-  operation: any;
-  stellarExpertUrl: string;
-  date: string;
-  fee: string;
-  themeColors: ThemeColors;
-}
+// interface ChangeTrustHistoryItemData {
+//   operation: any;
+//   stellarExpertUrl: string;
+//   date: string;
+//   fee: string;
+//   themeColors: ThemeColors;
+// }
 
 /**
  * Maps change trust operation data to history item data
  */
-export const mapChangeTrustHistoryItem = ({
-  operation,
-  stellarExpertUrl,
-  date,
-  fee,
-  themeColors,
-}: ChangeTrustHistoryItemData): HistoryItemData => {
+export const mapChangeTrustHistoryItem = (
+  operation: any,
+  themeColors: ThemeColors,
+  historyItemData: any,
+): HistoryItemUI => {
   const {
     asset_code: destAssetCode,
     asset_type: assetType,
     asset_issuer: assetIssuer,
-    id,
   } = operation;
 
   const isRemovingTrustline = BigNumber(operation?.limit).eq(0);
@@ -54,36 +45,17 @@ export const mapChangeTrustHistoryItem = ({
     />
   );
 
-  const actionText = isRemovingTrustline
-    ? t("history.transactionHistory.removedTrustline")
-    : t("history.transactionHistory.addedTrustline");
+  const ActionIcon =
+    Icon[historyItemData.actionIconString as keyof typeof Icon];
 
   const ActionIconComponent = isRemovingTrustline ? (
-    <Icon.MinusCircle size={16} color={themeColors.foreground.primary} />
+    <ActionIcon size={16} color={themeColors.foreground.primary} />
   ) : (
-    <Icon.PlusCircle size={16} color={themeColors.foreground.primary} />
+    <ActionIcon size={16} color={themeColors.foreground.primary} />
   );
 
-  const transactionDetails: TransactionDetails = {
-    operation,
-    transactionTitle: actionText,
-    transactionType: TransactionType.CHANGE_TRUST,
-    status: TransactionStatus.SUCCESS,
-    IconComponent,
-    ActionIconComponent,
-    fee,
-    externalUrl: `${stellarExpertUrl}/op/${id}`,
-  };
-
   return {
-    transactionDetails,
-    rowText: destAssetCode,
-    actionText,
-    dateText: date,
     IconComponent,
     ActionIconComponent,
-    amountText: null,
-    transactionStatus: TransactionStatus.SUCCESS,
-    isAddingFunds: null,
   };
 };

@@ -8,11 +8,12 @@ import {
   renderIconComponent,
   renderActionIcon,
 } from "components/screens/HistoryScreen/helpers";
-import { mapHistoryItemData } from "components/screens/HistoryScreen/mappers";
+import { mapHistoryItemUi } from "components/screens/HistoryScreen/mappers";
 import { Text } from "components/sds/Typography";
 import useColors from "hooks/useColors";
 import React, { useEffect, useState } from "react";
 import { View, TouchableOpacity } from "react-native";
+import { mapHistoryItemData } from "shared-lib-poc";
 
 /**
  * Component to display a single transaction history item
@@ -28,6 +29,7 @@ const HistoryItem: React.FC<HistoryItemProps> = ({
   const { themeColors } = useColors();
   const [isLoading, setIsLoading] = useState(true);
   const [historyItem, setHistoryItem] = useState<any>(null);
+  const [historyItemUi, setHistoryItemUi] = useState<any>(null);
 
   // Load history item data on component mount or when dependencies change
   useEffect(() => {
@@ -35,14 +37,20 @@ const HistoryItem: React.FC<HistoryItemProps> = ({
       try {
         const historyItemData = await mapHistoryItemData({
           operation,
-          accountBalances,
           publicKey,
           networkDetails,
-          network,
-          themeColors,
         });
 
+        const historyItemUiData = mapHistoryItemUi(
+          operation,
+          publicKey,
+          networkDetails,
+          themeColors,
+          historyItemData,
+        );
+
         setHistoryItem(historyItemData);
+        setHistoryItemUi(historyItemUiData);
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
@@ -76,13 +84,17 @@ const HistoryItem: React.FC<HistoryItemProps> = ({
   return (
     <TouchableOpacity
       onPress={() => {
-        handleTransactionDetails(historyItem.transactionDetails);
+        handleTransactionDetails({
+          ...historyItem.transactionDetails,
+          ActionIconComponent: historyItemUi.ActionIconComponent,
+          IconComponent: historyItemUi.IconComponent,
+        });
       }}
       className="mb-4 flex-row justify-between items-center flex-0"
     >
       <View className="flex-row items-center flex-1">
         {renderIconComponent({
-          iconComponent: historyItem.IconComponent,
+          iconComponent: historyItemUi.IconComponent,
           themeColors,
         })}
         <View className="ml-4 flex-1 mr-2">
@@ -91,7 +103,7 @@ const HistoryItem: React.FC<HistoryItemProps> = ({
           </Text>
           <View className="flex-row items-center gap-1">
             {renderActionIcon({
-              actionIcon: historyItem.ActionIconComponent,
+              actionIcon: historyItemUi.ActionIconComponent,
               themeColors,
             })}
             <Text sm secondary numberOfLines={1}>

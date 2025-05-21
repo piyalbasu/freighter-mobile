@@ -96,6 +96,7 @@
     "react-native-svg": "^15.11.2",
     "react-native-vision-camera": "^4.6.4",
     "readable-stream": "1.0.33",
+    "shared-lib-poc": "https://github.com/piyalbasu/shared-lib-poc.git#1fde77837edc067686e1d9ea319fb134fce58191",
     "stellar-hd-wallet": "^0.0.10",
     "stream-browserify": "^1.0.0",
     "styled-components": "^6.1.15",

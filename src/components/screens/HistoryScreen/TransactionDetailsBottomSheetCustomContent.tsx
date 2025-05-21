@@ -41,7 +41,7 @@ export const TransactionDetailsBottomSheetCustomContent: React.FC<
     return null;
   }
 
-  const fee = stroopToXlm(transactionDetails.fee).toString();
+  const fee = stroopToXlm(transactionDetails.fee || "").toString();
   const formattedDate = formatDate({
     date: transactionDetails?.operation.created_at ?? "",
     includeTime: true,
@@ -161,7 +161,7 @@ export const TransactionDetailsBottomSheetCustomContent: React.FC<
         lg
         icon={<Icon.LinkExternal01 size={16} color={themeColors.base[0]} />}
         onPress={() => {
-          Linking.openURL(transactionDetails.externalUrl);
+          Linking.openURL(transactionDetails.externalUrl || "");
         }}
       >
         {t("history.transactionDetails.viewOnStellarExpert")}
