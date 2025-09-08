@@ -69,11 +69,11 @@ export interface ContractDetailsType {
 
 export interface TransactionDetails {
   operation: Horizon.ServerApi.OperationRecord;
-  transactionTitle: string;
-  transactionType: TransactionType;
-  externalUrl: string;
-  fee: string;
-  status: TransactionStatus;
+  transactionTitle?: string;
+  transactionType?: TransactionType;
+  externalUrl?: string;
+  fee?: string;
+  status?: TransactionStatus;
   IconComponent: React.ReactNode;
   ActionIconComponent: React.ReactNode;
   createAccountDetails?: CreateAccountDetailsType;
@@ -84,15 +84,20 @@ export interface TransactionDetails {
 
 // Additional types for HistoryItem component
 export interface HistoryItemData {
-  transactionDetails: TransactionDetails;
-  rowText: string;
-  actionText: string | null;
+  transactionDetails?: TransactionDetails;
+  rowText?: string;
+  actionText?: string | null;
   ActionIconComponent: React.ReactElement | null;
-  dateText: string | null;
-  amountText: string | null;
+  dateText?: string | null;
+  amountText?: string | null;
   IconComponent: React.ReactElement | null;
-  transactionStatus: TransactionStatus;
-  isAddingFunds: boolean | null;
+  transactionStatus?: TransactionStatus;
+  isAddingFunds?: boolean | null;
+}
+
+export interface HistoryItemUI {
+  ActionIconComponent: React.ReactElement | null;
+  IconComponent: React.ReactElement | null;
 }
 
 export interface HistoryItemProps {
